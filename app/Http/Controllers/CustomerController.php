@@ -14,7 +14,19 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return CustomerResource::collection(Customer::paginate(10));
+        $customers = Customer::paginate(10);
+
+        // Return paginated resources with a custom message
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers fetched successfully.',
+            'data' => CustomerResource::collection($customers),
+            'pagination' => [
+                'current_page' => $customers->currentPage(),
+                'total_pages' => $customers->lastPage(),
+                'total_items' => $customers->total(),
+            ],
+        ], 200);
     }
 
     /**
@@ -23,8 +35,11 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $customer = Customer::create($request->validated());
-
-        return $customer->toJson();
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer Created Successfully!',
+            'data' => new CustomerResource($customer)
+        ], 201);
     }
 
     /**
@@ -32,23 +47,26 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer Fetched Successfully!',
+            'data' => new CustomerResource($customer)
+        ], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $customer->update($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer Updated Successfully!',
+            'data' => new CustomerResource($customer)
+        ], 201);
     }
 
     /**
@@ -56,6 +74,12 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer Deleted Successfully!',
+            'data' => []
+        ], 201);
     }
 }

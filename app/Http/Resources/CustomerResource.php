@@ -15,12 +15,14 @@ class CustomerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'email' => $this->email,
-            'birthdate' => $this->birthdate,
-            'age' => $this->age,
+            'data' => [
+                'id' => $this->id,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'email' => $this->email,
+                'birthdate' => $this->birthdate,
+                'age' => $this->age,
+            ],
         ];
     }
 }
