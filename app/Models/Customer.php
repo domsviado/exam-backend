@@ -30,4 +30,9 @@ class Customer extends Model
             $user->age = $user->birthdate ? Carbon::parse($user->birthdate)->age : null;
         });
     }
+
+    public function getBirthdateAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
+    }
 }
