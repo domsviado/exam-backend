@@ -14,7 +14,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(10);
+        $customers = Customer::latest()->paginate(10);
 
         // Return paginated resources with a custom message
         return response()->json([

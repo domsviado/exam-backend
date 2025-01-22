@@ -19,6 +19,7 @@ class AuthResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'token' => $this->token,
+            'token_expiration' => $this->token_expiration,
         ];
     }
 }

@@ -15,7 +15,9 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $user->token = $user->createToken('Laravel Password Grant Client')->accessToken;
+            $token = $user->createToken('Laravel Password Grant Client');
+            $user->token = $token->accessToken;
+            $user->token_expiration = $token->token->expires_at;
             return response()->json([
                 'success' => true,
                 'message' => 'Login Success!',
